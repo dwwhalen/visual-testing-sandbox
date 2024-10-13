@@ -17,7 +17,7 @@ export function Footer({ todos, dispatch }) {
 
     return (
         <footer className="footer" data-testid="footer">
-            <span className="todo-count">{`${activeTodos.length} ${activeTodos.length === 1 ? "item" : "items"} left!`}</span>
+            <span className="todo-count" data-testid="todo-count">{`${activeTodos.length} ${activeTodos.length === 1 ? "item" : "items"} left!`}</span>
             <ul className="filters" data-testid="footer-navigation">
                 <li>
                     <a className={classnames({ selected: route === "/" })} href="#/">
