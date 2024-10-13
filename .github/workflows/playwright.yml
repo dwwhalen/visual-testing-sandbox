@@ -21,8 +21,10 @@ jobs:
       run: npm run serve &
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
-    - name: Run Playwright tests
-      run: npx playwright test -g "should allow me to add todo items"
+    - name: Run Playwright Smoke tests only
+      run: npx playwright test -g "@smoke"
+    - name: Run all Playwright tests
+      run: npx playwright test
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
