@@ -13,6 +13,8 @@ const TODO_ITEMS = [
 
 test.describe('New Todo', () => {
   test('@smoke should allow me to add todo items', async ({ page }) => {
+    await expect(page).toHaveScreenshot();
+
     // create a new todo locator
     const newTodo = page.getByPlaceholder('What needs to be done?');
 
@@ -24,6 +26,7 @@ test.describe('New Todo', () => {
     await expect(page.getByTestId('todo-item-label')).toHaveText([
       TODO_ITEMS[0]
     ]);
+    await expect(page).toHaveScreenshot();
 
     // Create 2nd todo.
     await newTodo.fill(TODO_ITEMS[1]);
@@ -34,7 +37,7 @@ test.describe('New Todo', () => {
       TODO_ITEMS[0],
       TODO_ITEMS[1]
     ]);
-
+    await expect(page).toHaveScreenshot();
     await checkNumberOfTodosInLocalStorage(page, 2);
   });
 
