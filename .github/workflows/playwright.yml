@@ -22,7 +22,7 @@ jobs:
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
     - name: Run Playwright Smoke tests only
-      run: npx playwright test -g "@smoke"
+      run: npm run e2e:smoke
     - name: Run all Playwright tests
       run: npx playwright test
     - uses: actions/upload-artifact@v4
