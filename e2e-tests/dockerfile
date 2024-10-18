@@ -1,0 +1,7 @@
+FROM mcr.microsoft.com/playwright:latest
+
+# Install browsers in the container
+RUN npx playwright install --with-deps
+
+# Set the working directory
+WORKDIR /workspace

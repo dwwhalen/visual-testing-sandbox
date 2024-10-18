@@ -4,15 +4,14 @@ docker pull mcr.microsoft.com/playwright:latest
 ```
 
 
-Run thecaontainer, monthing the current directory
+Run the container, mounting the current directory
 ``
 docker run -it --rm \
   --ipc=host \
-  --network=host \
   -v $(pwd):/workspace \
   -w /workspace \
   mcr.microsoft.com/playwright:latest \
-  /bin/bash
+  /bin/bash -c "npx playwright install --with-deps && /bin/bash"
 ```
 
 Install the browsers
