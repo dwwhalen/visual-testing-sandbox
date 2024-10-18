@@ -10,6 +10,7 @@ docker run -it --rm \
   --ipc=host \
   -v $(pwd):/workspace \
   -w /workspace \
+  -e IS_CONTAINER=true \
   mcr.microsoft.com/playwright:latest \
   /bin/bash -c "npx playwright install --with-deps && /bin/bash"
 ```
