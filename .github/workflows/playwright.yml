@@ -12,7 +12,7 @@ jobs:
     container: 
       image: mcr.microsoft.com/playwright:latest
     env:
-      IS_CONTAINER: true
+      HOME: /tmp
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
