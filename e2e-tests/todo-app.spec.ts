@@ -3,9 +3,9 @@ import { test, expect, type Page } from '@playwright/test';
 test.beforeEach(async ({ page }) => {
 
 
-  if (process.env.IS_CONTAINER === 'true')
-    page.goto('http://host.docker.internal:7002');
-  else
+  // if (process.env.IS_CONTAINER === 'true')
+  //   page.goto('http://host.docker.internal:7002');
+  // else
     page.goto('http://127.0.0.1:7002');
 
 });
