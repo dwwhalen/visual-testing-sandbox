@@ -12,6 +12,7 @@
     "dev": "webpack serve --open --config webpack.dev.js",
     "serve": "http-server ./dist -p 7002 -c-1 --cors",
     "test": "jest",
+    "e2e:all": "npx playwright test",
     "e2e:smoke": "npx playwright test -g '@smoke'"
   },
   "devDependencies": {
