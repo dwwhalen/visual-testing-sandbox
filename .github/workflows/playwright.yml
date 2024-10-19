@@ -41,12 +41,4 @@ jobs:
           name: html-report
           path: test-results/html-report/
           retention-days: 5
-
-      - name: Upload trace artifacts
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: trace-artifacts
-          path: test-results/artifacts/
-          retention-days: 5
   
