@@ -9,10 +9,9 @@ if (!fs.existsSync(diffDir)) {
 }
 
 test.beforeEach(async ({ page }) => {
-  // if (process.env.IS_CONTAINER === 'true')
-  //   page.goto('http://host.docker.internal:7002');
-  // else
-    page.goto('http://127.0.0.1:7002');
+
+    // page.goto('http://127.0.0.1:7002');
+    page.goto('localhost:8080');
 
 });
 
@@ -50,6 +49,7 @@ test.describe('New Todo', () => {
     ]);
     await expect(page).toHaveScreenshot('two-todos.png');
     await checkNumberOfTodosInLocalStorage(page, 2);
+    expect(page).toHaveTitle('make this test fail');
   });
 
   test('should clear text input field when an item is added', async ({ page }) => {
