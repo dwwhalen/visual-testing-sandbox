@@ -47,5 +47,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: playwright-diff-pngs
-          path: test-results/screenshots-diff/
+          path: test-results/
           retention-days: 5
