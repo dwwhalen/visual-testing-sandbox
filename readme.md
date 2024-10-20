@@ -1,3 +1,15 @@
+```
+npm install
+npx playwright install --with-deps
+npm run dev
+npm run e2e:smoke
+,,,
+
+
+
+
+
+
 Pull the latest Playwright container
 ```
 docker pull mcr.microsoft.com/playwright:latest
