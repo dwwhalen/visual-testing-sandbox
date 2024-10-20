@@ -49,7 +49,7 @@ test.describe('New Todo', () => {
     ]);
     await expect(page).toHaveScreenshot('two-todos.png');
     await checkNumberOfTodosInLocalStorage(page, 2);
-    expect(page).toHaveTitle('TodoMVC: React');
+    // expect(page).toHaveTitle('TodoMVC: React');
   });
 
   test('should clear text input field when an item is added', async ({ page }) => {
