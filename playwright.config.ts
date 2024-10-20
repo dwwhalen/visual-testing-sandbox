@@ -22,13 +22,19 @@ export default defineConfig({
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 4 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: [['html', { outputFolder: 'test-results/html-report', open: 'never' }]],
+  reporter: [
+    ['list'],
+    ['html', { outputFolder: 'test-results/html-report', open: 'never' }]],
   outputDir: 'test-results/artifacts',
+  expect: {
+    timeout: 10000, // Set global timeout to 10 seconds
+  },
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
     // baseURL: 'http://127.0.0.1:3000',
     headless: true,
     trace: 'retain-on-failure',
+        /* Global timeout for assertions */
   },
 
   /* Configure projects for major browsers */
