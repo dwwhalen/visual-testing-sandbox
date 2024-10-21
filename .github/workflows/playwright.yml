@@ -26,8 +26,8 @@ jobs:
       - name: Start the application
         run: npm run dev &
         
-      # - name: Install Playwright browsers
-      #   run: npx playwright install --with-deps
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
       
       - name: Run Playwright tests - SMOKE ONLY
         run: NODE_OPTIONS="--max-old-space-size=4096" npm run e2e:smoke
