@@ -2,12 +2,6 @@ import { test, expect, type Page } from '@playwright/test';
 import path from 'path';
 import fs from 'fs';
 
-// Ensure the directory exists
-const diffDir = path.join(__dirname, 'test-results/screenshots-diff');
-if (!fs.existsSync(diffDir)) {
-  fs.mkdirSync(diffDir, { recursive: true });
-}
-
 test.beforeEach(async ({ page }) => {
 
     // page.goto('http://127.0.0.1:7002');

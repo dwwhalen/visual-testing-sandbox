@@ -1,7 +1,7 @@
+# To run locally:
 ```
 npm install
 npx playwright install --with-deps
-npm run dev
 npm run e2e:smoke
 ,,,
 
@@ -10,13 +10,7 @@ npm run e2e:smoke
 
 
 
-Pull the latest Playwright container
-```
-docker pull mcr.microsoft.com/playwright:latest
-```
-
-
-Run the container, mounting the current directory
+Run the in a Docker, mounting the current directory
 ``
 docker run -it --rm \
   --ipc=host \
@@ -24,10 +18,5 @@ docker run -it --rm \
   -w /workspace \
   -e HOME=/tmp \
   mcr.microsoft.com/playwright:latest \
-  /bin/bash -c "npx playwright install --with-deps && /bin/bash"
-```
-
-Install the browsers
-```
-npx playwright install --with-deps
+  /bin/bash -c "npx playwright install --with-deps && npm run e2e:smoke"
 ```
