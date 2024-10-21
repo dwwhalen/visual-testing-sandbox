@@ -16,7 +16,7 @@ const TODO_ITEMS = [
 ] as const;
 
 test.describe('New Todo', () => {
-  test('@smoke should allow me to add todo items', async ({ page }) => {
+  test('@visual should allow me to add todo items', async ({ page }) => {
     await expect(page).toHaveScreenshot('landing.png');
 
     // create a new todo locator

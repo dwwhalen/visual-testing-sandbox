@@ -13,7 +13,8 @@
     "serve": "http-server ./dist -p 7002 -c-1 --cors",
     "test": "jest",
     "e2e:all": "npx playwright test",
-    "e2e:smoke": "npx playwright test -g '@smoke'"
+    "e2e:visual": "npx playwright test -g '@visual'",
+    "visual-local-in-docker": "./run-e2e-in-docker.sh"
   },
   "devDependencies": {
     "@babel/core": "^7.21.0",

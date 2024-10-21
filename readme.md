@@ -1,22 +1,12 @@
-# To run locally:
+# To run locally after cloning the repo:
 ```
-npm install
+npm ci
 npx playwright install --with-deps
-npm run e2e:smoke
+npm run e2e:visual
 ,,,
 
 
-
-
-
-
-Run the in a Docker, mounting the current directory
-``
-docker run -it --rm \
-  --ipc=host \
-  -v $(pwd):/workspace \
-  -w /workspace \
-  -e HOME=/tmp \
-  mcr.microsoft.com/playwright:latest \
-  /bin/bash -c "npx playwright install --with-deps && npm run e2e:smoke"
+To run the visual tests in docker:
+```
+npm run visual-local-in-docker
 ```
