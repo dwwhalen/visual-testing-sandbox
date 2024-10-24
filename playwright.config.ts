@@ -43,18 +43,14 @@ export default defineConfig({
       name: 'chrome-desktop',
       use: { ...devices['Desktop Chrome'] },
     },
-
     {
       name: 'firefox-desktop',
       use: { ...devices['Desktop Firefox'] },
     },
-
     {
       name: 'webkit-desktop',
       use: { ...devices['Desktop Safari'] },
     },
-
-    /* Test against mobile viewports. */
     {
       name: 'chrome-mobile',
       use: { ...devices['Pixel 5'] },
@@ -63,16 +59,6 @@ export default defineConfig({
       name: 'safari-mobile',
       use: { ...devices['iPhone 12'] },
     },
-
-    /* Test against branded browsers. */
-    // {
-    //   name: 'Microsoft Edge',
-    //   use: { ...devices['Desktop Edge'], channel: 'msedge' },
-    // },
-    // {
-    //   name: 'Google Chrome',
-    //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
-    // },
   ],
 
   /* Run your local dev server before starting the tests */

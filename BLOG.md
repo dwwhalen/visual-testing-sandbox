@@ -40,7 +40,7 @@ This test is pretty basic.  It just navigates to the applcation's home page and 
 Error: A snapshot doesn't exist at /Users/denniswhalen/visual-testing-sandbox/e2e-tests/blog.spec.ts-snapshots/landing-chromium-desktop-darwin.png, writing actual.
 ```
 
-The test failed because Playwright didn’t find a baseline image, which makes sense since I don't have a baseline image yet.   Playwright helpfully created a baseline for me, based on what the page looked like during the test: 
+The test failed because Playwright didn’t find a baseline image, which makes sense since I don't have a baseline image yet!   Playwright helpfully created a baseline for me, based on what the page looked like during the test: 
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/pqi2mb1nkywb9ln4uraf.png)
 
@@ -54,9 +54,44 @@ After checking the baseline image and confirming it looked good, I ran the test 
   1 passed (3.0s)
 ```
 
-Boom! My first visual test is working. Next up, I could write more tests, but I wanted to push this to GitHub and run it in the CI workflow. I just want to be sure it works, but really, what could go wrong?
+# Dealing with Challenge #1: different browsers and viewports 
+That test ran in the Chromium dersktop browser, but you can also run it in other browsers like Firefox and WebKit, and also mobiole broesers.  To do that I just need to update my `playwright.config.ts` file to include the browsers I want to test:
+```typescript
+projects: [
+    {
+      name: 'chrome-desktop',
+      use: { ...devices['Desktop Chrome'] },
+    },
+    {
+      name: 'firefox-desktop',
+      use: { ...devices['Desktop Firefox'] },
+    },
+    {
+      name: 'webkit-desktop',
+      use: { ...devices['Desktop Safari'] },
+    },
+    {
+      name: 'chrome-mobile',
+      use: { ...devices['Pixel 5'] },
+    },
+    {
+      name: 'safari-mobile',
+      use: { ...devices['iPhone 12'] },
+    },
+  ],
+```
 
-# Dealing with Challenge #1: Consistent Looks Across Browsers/OS/viewport
+With those updates I can run the tests again, and it will run in all the browsers and viewports I specified.
+
+When the test runs, Playwright will look for a baseline image that matches the name of the project for which the test is running.  Since I don't yet have baseline images for the projects I just added, Playwright will generate them for me.  I can then review them and rerun the test to be sure all is green.
+
+Wity that would done I have 1 simple test taht rtuns in 5 brwser/viewport combinations, and verifies the screens match the baselimne files:
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/fibrkunselocxbz9tsbk.png)
+
+Boom! My first visual test is working locally. Next up, I could write more tests, but first I want to push this to GitHub and run this first test in the CI workflow. I just want to be sure it works, but really, what could go wrong?
+
+# Dealing with Challenge #1: different operating systems
 
 Hmmm, when I ran it in CI, I hit this error:
 
@@ -64,13 +99,13 @@ Hmmm, when I ran it in CI, I hit this error:
 Error: A snapshot doesn't exist at /workspace/e2e-tests/blog.spec.ts-snapshots/landing-chromium-desktop-linux.png, writing actual.
 ```
 
-This happened because the baseline image Playwright was looking for in the CI environment didn’t match the one I created on my MacBook. Playwright generated a baseline with `-darwin.png` (Mac), but the CI system is running Linux, so it’s expecting a `-linux.png` file.
+This happened because the baseline image Playwright is looking for in the CI environment doesn’t match the one I created on my MacBook. Playwright initially generated a baseline with `-darwin.png` (Mac), but the CI system is running Linux, so it’s expecting a `-linux.png` file.
 
-Playwright uses the operating system as part of the baseline filename, which is a good thing since, as I mentioned in Challenge #1, apps can look different depending on the OS.
+Playwright uses the operating system as part of the baseline filename, which is a good thing since, as I mentioned in Challenge #1, the web page can look different depending on the OS.
 
 So, now I needed to create a Linux baseline image.
 
-## Creating Linux Baseline Images on a MacBook
+## Docker to the rescue!
 
 To solve this, I used Docker on my MacBook to generate the Linux baseline images. Here’s the command I ran:
 
@@ -84,9 +119,12 @@ docker run -it --rm \
   /bin/bash -c "npx playwright install --with-deps && npm run e2e:visual"
 ```
 
-This command runs the visual tests inside a Docker container and generates the baseline images for Linux. I also tweasked my Github workflow to run the visual tests in the same container, so I could be sure the tests would pass in the CI environment.
+This command runs the visual tests inside a Docker container and generates the baseline images for Linux so now I have all the baseline images I need:
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/o1h34qf9lxwjddt10snc.png) 
 
-I committed those images to the repo, and now the tests pass both locally on my Mac and in the CI workflow. 
+I also tweaked my Github workflow to run the visual tests with the same Docer image that I used locally, so I can be sure the if ther tests pass locally in Docker, they'll also pass in the CI environment.
+
+I committed the changes to the repo, and now the tests pass both locally on my Mac and in the CI workflow. 
 
 This setup ensures that the visual aspects of your app look great across different operating systems without needing to set up multiple environments. Pretty slick, right?
 
