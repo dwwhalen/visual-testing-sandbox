@@ -3,10 +3,7 @@ import path from 'path';
 import fs from 'fs';
 
 test.beforeEach(async ({ page }) => {
-
-    // page.goto('http://127.0.0.1:7002');
-    page.goto('localhost:8080');
-
+    page.goto('/');
 });
 
 const TODO_ITEMS = [

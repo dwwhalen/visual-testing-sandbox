@@ -31,7 +31,7 @@ export default defineConfig({
   },
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    // baseURL: 'http://127.0.0.1:3000',
+    baseURL: 'http://localhost:8080',
     headless: true,
     trace: 'retain-on-failure',
         /* Global timeout for assertions */
@@ -40,7 +40,7 @@ export default defineConfig({
   /* Configure projects for major browsers */
   projects: [
     {
-      name: 'chromium-desktop',
+      name: 'chrome-desktop',
       use: { ...devices['Desktop Chrome'] },
     },
 
@@ -56,11 +56,11 @@ export default defineConfig({
 
     /* Test against mobile viewports. */
     {
-      name: 'Mobile Chrome',
+      name: 'chrome-mobile',
       use: { ...devices['Pixel 5'] },
     },
     {
-      name: 'Mobile Safari',
+      name: 'safari-mobile',
       use: { ...devices['iPhone 12'] },
     },
 
