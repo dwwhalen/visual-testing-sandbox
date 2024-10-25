@@ -100,7 +100,7 @@ Hmmm, when I ran it in CI, I get this error:
 Error: A snapshot doesn't exist at /workspace/e2e-tests/blog.spec.ts-snapshots/landing-chromium-desktop-linux.png, writing actual.
 ```
 
-This happened because the baseline image Playwright is looking for in the CI environment doesn’t match the one I created on my MacBook. Playwright initially generated a baseline with `-darwin.png` (Mac), but the CI system is running Linux, so it’s expecting a `-linux.png` file.
+This happened because the baseline image Playwright is looking for in the CI environment doesn’t exist. The basewline images created previously had a name ending in `-darwin.png` (Mac), but the CI system is running Linux, so it’s expecting a `-linux.png` file.
 
 Playwright uses the operating system as part of the baseline filename, which is a good thing since, as I mentioned in Challenge #1, the web page can look different depending on the OS.
 
@@ -121,17 +121,32 @@ docker run -it --rm \
 ```
 
 This command runs the visual tests inside a Docker container and generates the baseline images for Linux so now I have all the baseline images I need:
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/o1h34qf9lxwjddt10snc.png) 
+![Docker command](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/o1h34qf9lxwjddt10snc.png) 
 
-I also tweaked my Github workflow to run the visual tests with the same Docer image that I used locally, so I can be sure the if ther tests pass locally in Docker, they'll also pass in the CI environment.
+I also tweaked my Github workflow to run the visual tests with the same Docker image that I used locally, so I can be sure the if the tests pass locally in Docker, they'll also pass in the CI environment.
 
 I committed the changes to the repo, and now the tests pass both locally on my Mac and in the CI workflow. 
 
 This setup ensures that the visual aspects of your app look great across different operating systems without needing to set up multiple environments. Pretty slick, right?
 
-# Wrapup
-So that's just a little taste of how you can use Playwright for visual testing.  Hopefully you can see the value of visual testing and how it can help you catch visual bugs before your users!
+# Dealing with a failed test
+So now let's see how Playwright helps you when a test fails.  I'm going to change the page so it does not have placeholder text is the ToDo texbox.  When I run the test, I get this error:
 
-What might nat be as obvious is the fact that visual tersting can help simplify your functionaal testing.  ON futire posts I am going to talk about that, and also talk about how tyou can deal with dynamic data in your visual tesigng. 
+```console
+Error: Screenshot comparison failed:
+``` 
+
+To see the specific issue, I can take a look at the html report that Playwright generates:
+
+![Side-by-side view](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/fe35465y45yftvp1mw4k.png)
+
+I've selected the side-by-side view, which shows the actual image on the left and the expected image on the right.  As you can see, there are a number of selections along the top that allow me to identify the differences between the actual and expected images.  
+
+From there you can decide if the differences are acceptable or not.  If they are expected, you can update the baseline image.  If not, you can update the page to fix the issue.
+
+# Wrapup
+So that's just a little taste of how you can use Playwright for visual testing.  Hopefully you can see the value of visual testing and how it can help you catch visual bugs before your users do!
+
+What might nat be as obvious is the fact that visual testing can help simplify your functionaal testing.  In futire posts I am going to talk about that, and also talk about how you can deal with dynamic data in your visual testing. 
 
 Stay tuned!
