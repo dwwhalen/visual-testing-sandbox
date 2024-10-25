@@ -2,27 +2,28 @@
 
 So, what’s the big deal with visual testing, and how is it different from functional testing?
 
-Visual testing is all about comparing an ACTUAL web page to an EXPECTED (baseline) image. Unlike functional testing, which checks if your app *works* as expected, visual testing focuses on how your web pages *look*. 
+Visual testing is all about comparing an ACTUAL web page to an EXPECTED (baseline) image. Unlike functional testing, which checks if your application *works* as expected, visual testing focuses on how your web pages *look*. 
 
 Many times visual testing is done manually, but you can (and should) automate it where appropriate using tools like Playwright. 
 
-While Playwright is known for functional testing, it also comes with a really straightforward API that lets you take screenshots and compare them to baseline images automatically. This way, you can easily make sure your app looks just right without spending hours staring at the screen yourself.
+While Playwright is known for functional testing, it also comes with a really straightforward API that lets you take screenshots and compare them to baseline images automatically. This way, you can easily include visual testing in your automated test suite to ensure that as you application evolves it continues to look great.
 
 # Visual Testing Challenges
 
-Visual testing can be super useful, but like anything else, it has its challenges. Here are two big ones:
+Visual testing can be super useful, but like anything else, it has its challenges. Here are some that come to mind:
 
-## Challenge #1: Consistent Looks Across Browsers/OS/viewport
-One of the trickiest parts of visual testing is making sure your app looks good across different browsers, operating systems, and screen resolutions. What looks perfect in Chrome on your MacBook might not look great in Safari on your iPhone 12.
+## Challenge #1: Need to test across multiple browsers, viewports, and operating sytems
+One of the trickiest parts of visual testing is making sure your application looks good across different browsers, operating systems, and screen resolutions. What looks perfect in Chrome on your MacBook might not look great in Safari on your iPhone 12.
 
-## Challenge #2: Dynamic Content
-Web apps often have dynamic content that changes frequently. This makes maintaining baseline images for visual testing a bit of a headache.
+## Challenge #2: manual validdation is boring and error-prone
+Visual testing is often done manually, which can be time-consuming and error-prone.  It's easy to miss a visual bug, especially if you're testing on multiple browsers and devices.
+
 
 Luckily, Playwright has some great features to help with these challenges, so let’s dig into how it works.
 
 # A Basic Example
 
-Let’s start with a simple example to show how easy it is to set up visual testing with Playwright. If you want to see all the details, I’ve got a [sample repo](https://github.com/dwwhalen/visual-testing-sandbox) with a basic ToDo app and some Playwright tests to go with it. Here’s the first test I wrote:
+Let’s start with a simple example to show how easy it is to set up visual testing with Playwright. If you want to see all the details, I’ve got a [sample repo](https://github.com/dwwhalen/visual-testing-sandbox) with a basic task tracking application and some Playwright tests to go with it. Here’s the first test I wrote:
 
 ```typescript
 test.beforeEach(async ({ page }) => {
@@ -31,7 +32,7 @@ test.beforeEach(async ({ page }) => {
 
 test.describe('New Todo', () => {
   test('@visual should allow me to add todo items', async ({ page }) => {
-    await expect(page).toHaveScreenshot('landing page');
+    await expect(page).toHaveScreenshot('landing');
   });
 });
 ```
@@ -42,21 +43,21 @@ This test is pretty basic.  It just navigates to the application's home page and
 Error: A snapshot doesn't exist at /Users/denniswhalen/visual-testing-sandbox/e2e-tests/blog.spec.ts-snapshots/landing-chromium-desktop-darwin.png, writing actual.
 ```
 
-The test failed because Playwright didn’t find a baseline image, which makes sense since I don't have a baseline image yet!   Playwright helpfully created a baseline for me, based on what the page looked like during the test: 
+The test failed because Playwright didn’t find a baseline image.  This makes sense since I don't have a baseline image yet!   Playwright created a baseline for me, based on what the page looked like during the test: 
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/pqi2mb1nkywb9ln4uraf.png)
 
-After checking the baseline image and confirming it looked good, I can run the test again:
+After manually checking the baseline image and confirming it looked good, I can run the test again:
 
 ```console
       ✓  1 [chromium-desktop] › blog.spec.ts:10:9 › New Todo › @visual should allow me to add todo items (1.5s)
 
   1 passed (3.0s)
 ```
- OK, looks good!
+ This time Playwright found the baseline screen image, compared it to the actual screen in the test, and verified they match.  OK, looks good!
 
 # Dealing with Challenge #1: different browsers and viewports 
-That test ran in the Chromium desktop browser, but you can also run it in other browsers like Firefox and WebKit, and also mobile browsers.  To do that I just need to update my `playwright.config.ts` file to include the browsers I want to test:
+That test ran in the Chromium desktop browser, but you can also run it in other browsers like Firefox and WebKit, and also mobile browsers.  To do that I just need to update my `playwright.config.ts` file to include the browsers and viewports I want to test:
 ```typescript
 projects: [
     {
@@ -86,7 +87,7 @@ With those updates I can run the tests again, and it will run in all the browser
 
 When the test runs, Playwright will look for a baseline image that matches the name of the project for which the test is running.  Since I don't yet have baseline images for the projects I just added, Playwright will generate them for me.  I can then review them and rerun the test to be sure all is green.
 
-With that done I have 1 simple test that runs in 5 browser/viewport combinations, and verifies the screens match the baseline files:
+With that done I have 1 simple test that runs in 5 browser/viewport combinations, and verifies the screens match the baseline files.  Note the name of the baseline files includes the page name (`landing`), the browser name, and OS (`-darwin`), so you can easily see which baseline images are being used for each test.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/fibrkunselocxbz9tsbk.png)
 
@@ -125,12 +126,10 @@ This command runs the visual tests inside a Docker container and generates the b
 
 I also tweaked my Github workflow to run the visual tests with the same Docker image that I used locally, so I can be sure the if the tests pass locally in Docker, they'll also pass in the CI environment.
 
-I committed the changes to the repo, and now the tests pass both locally on my Mac and in the CI workflow. 
-
-This setup ensures that the visual aspects of your app look great across different operating systems without needing to set up multiple environments. Pretty slick, right?
+I committed the changes to the repo, and now the tests pass both locally on my Mac and in the CI workflow.  Pretty slick, right?
 
 # Dealing with a failed test
-So now let's see how Playwright helps you when a test fails.  I'm going to change the page so it does not have placeholder text is the ToDo texbox.  When I run the test, I get this error:
+So now let's see how Playwright helps you when a test fails.  I'm going to change the application so it does not have placeholder text is the ToDo texbox.  When I run the test, I get this error:
 
 ```console
 Error: Screenshot comparison failed:
@@ -138,7 +137,7 @@ Error: Screenshot comparison failed:
 
 To see the specific issue, I can take a look at the html report that Playwright generates:
 
-![Side-by-side view](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/fe35465y45yftvp1mw4k.png)
+![HTMK report with side-by-side view](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/fe35465y45yftvp1mw4k.png)
 
 I've selected the side-by-side view, which shows the actual image on the left and the expected image on the right.  As you can see, there are a number of selections along the top that allow me to identify the differences between the actual and expected images.  
 
@@ -147,6 +146,10 @@ From there you can decide if the differences are acceptable or not.  If they are
 # Wrapup
 So that's just a little taste of how you can use Playwright for visual testing.  Hopefully you can see the value of visual testing and how it can help you catch visual bugs before your users do!
 
-What might nat be as obvious is the fact that visual testing can help simplify your functionaal testing.  In futire posts I am going to talk about that, and also talk about how you can deal with dynamic data in your visual testing. 
+What might nat be as obvious is the fact that visual testing can help simplify your functionaal testing.  In future posts I am going to talk about that, and also talk about how you can deal with dynamic data in your automated visual testing. 
 
 Stay tuned!
+
+<a href="https://dev.to/leading-edje">
+  ![Smart EDJE Image](https://dev-to-uploads.s3.amazonaws.com/i/5uo60qforg9yqdpgzncq.png)
+</a>
