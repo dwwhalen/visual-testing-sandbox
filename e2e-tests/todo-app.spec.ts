@@ -1,6 +1,6 @@
 import { test, expect, type Page } from '@playwright/test';
-import path from 'path';
-import fs from 'fs';
+const os = require('os');
+const path = require('path');
 
 test.beforeEach(async ({ page }) => {
     page.goto('/');
@@ -14,7 +14,7 @@ const TODO_ITEMS = [
 
 test.describe('New Todo', () => {
   test('@visual should allow me to add todo items', async ({ page }) => {
-    await expect(page).toHaveScreenshot('landing.png');
+    await expect(page).toHaveScreenshot([os.platform(), 'landing.png']);
 
     // create a new todo locator
     const newTodo = page.getByPlaceholder('What needs to be done?');
@@ -27,7 +27,7 @@ test.describe('New Todo', () => {
     await expect(page.getByTestId('todo-item-label')).toHaveText([
       TODO_ITEMS[0]
     ]);
-    await expect(page).toHaveScreenshot('one-todo.png');
+    await expect(page).toHaveScreenshot([os.platform(), 'one-todo.png']);
 
     // Create 2nd todo.
     await newTodo.fill(TODO_ITEMS[1]);
@@ -38,7 +38,8 @@ test.describe('New Todo', () => {
       TODO_ITEMS[0],
       TODO_ITEMS[1]
     ]);
-    await expect(page).toHaveScreenshot('two-todos.png');
+
+    await expect(page).toHaveScreenshot([os.platform(), 'two-todos.png']);
     await checkNumberOfTodosInLocalStorage(page, 2);
     // expect(page).toHaveTitle('TodoMVC: React');
   });
@@ -51,7 +52,7 @@ test.describe('New Todo', () => {
     await newTodo.fill(TODO_ITEMS[0]);
     await newTodo.press('Enter');
 
-    // Check that input is empty.
+    // Check that input is empty. 
     await expect(newTodo).toBeEmpty();
     await checkNumberOfTodosInLocalStorage(page, 1);
   });

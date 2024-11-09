@@ -5,5 +5,5 @@ docker run -it --rm \
   -v $(pwd):/workspace \
   -w /workspace \
   -e HOME=/tmp \
-  mcr.microsoft.com/playwright:latest \
-  /bin/bash -c "npx playwright install --with-deps && npm run e2e:visual"
+  mcr.microsoft.com/playwright:v1.48.0-noble \
+  /bin/bash -c "npm run e2e:visual"

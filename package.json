@@ -15,7 +15,7 @@
     "e2e:all": "npx playwright test",
     "e2e:visual": "npx playwright test -g '@visual'",
     "e2e:visual:chrome": "npx playwright test -g '@visual' --project=chrome-desktop",
-    "visual-local-in-docker": "./run-e2e-in-docker.sh"
+    "e2e:visual:docker": "./run-e2e-in-docker.sh"
   },
   "devDependencies": {
     "@babel/core": "^7.21.0",
