@@ -4,6 +4,7 @@ const path = require("path");
 module.exports = {
     entry: {
         app: path.resolve(__dirname, "src", "index.js"),
+        newFile: path.resolve(__dirname, "src", "datetime.js"),
     },
     plugins: [
         new HtmlWebpackPlugin({
